@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>합격자 과목별·레벨별 인원 현황</title>
+<style>
+  :root {
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #667085;
+    --line: #e4e9f2;
+    --accent: #2563eb;
+    --enjoy: #3b82f6;
+    --dive: #14b8a6;
+    --challenge: #f59e0b;
+    --shadow: 0 10px 30px rgba(34, 52, 82, .08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  .page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 32px auto 60px;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  button {
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--text);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  button.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .hero {
+    background: linear-gradient(135deg, #172554 0%, #1d4ed8 60%, #0f766e 100%);
+    color: #fff;
+    border-radius: 24px;
+    padding: 34px;
+    box-shadow: var(--shadow);
+  }
+  .hero h1 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 40px); letter-spacing: -.04em; }
+  .hero p { margin: 0; opacity: .82; }
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .kpi {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 16px;
+    padding: 18px;
+    backdrop-filter: blur(6px);
+  }
+  .kpi .label { font-size: 13px; opacity: .78; }
+  .kpi .value { display: block; margin-top: 4px; font-size: 29px; font-weight: 800; }
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+  .card h2, .card h3 { margin: 0; }
+  .sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .chart-box {
+    display: grid;
+    grid-template-columns: minmax(200px, 260px) 1fr;
+    align-items: center;
+    gap: 20px;
+    min-height: 300px;
+  }
+  canvas { width: 100%; height: auto; max-width: 280px; }
+  .legend { display: grid; gap: 9px; }
+  .legend-row {
+    display: grid;
+    grid-template-columns: 12px 1fr auto;
+    gap: 9px;
+    align-items: center;
+    font-size: 14px;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 4px; }
+  .legend-row strong { font-variant-numeric: tabular-nums; }
+  .section { margin-top: 18px; }
+  .section-title {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .section-title h2 { margin: 0; font-size: 22px; }
+  .section-title span { color: var(--muted); font-size: 13px; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+  thead th {
+    color: #475467;
+    background: #f8fafc;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  tbody tr:hover { background: #f8fbff; }
+  tfoot th { background: #f8fafc; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .strong { font-weight: 800; color: #0f3e9e; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 12px;
+  }
+  .badge-enjoy { color: #1d4ed8; background: #dbeafe; }
+  .badge-dive { color: #0f766e; background: #ccfbf1; }
+  .badge-challenge { color: #b45309; background: #fef3c7; }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .detail-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head span { color: var(--muted); font-weight: 700; }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+  }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 24px;
+  }
+  @media (max-width: 920px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid, .detail-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 620px) {
+    .page { width: min(100% - 20px, 1180px); margin-top: 12px; }
+    .hero { padding: 24px 18px; border-radius: 18px; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .chart-box { grid-template-columns: 1fr; justify-items: center; }
+    .card { padding: 18px; }
+  }
+  @media print {
+    body { background: #fff; }
+    .page { width: 100%; margin: 0; }
+    .toolbar { display: none; }
+    .hero, .card, .detail-card { box-shadow: none; break-inside: avoid; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .section { break-before: auto; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="toolbar">
+    <button onclick="window.print()">인쇄 / PDF 저장</button>
+    <button class="primary" onclick="downloadCSV()">요약 CSV 내려받기</button>
+  </div>
+
+  <header class="hero">
+    <h1>합격자 인원 현황</h1>
+    <p>과목별 · 레벨별 통합 요약 / 집계 기준일: 2026년 8월 2일</p>
+    <div class="kpis">
+      <div class="kpi"><span class="label">전체 합격자</span><span class="value">192명</span></div>
+      <div class="kpi"><span class="label">Enjoy</span><span class="value">126명</span></div>
+      <div class="kpi"><span class="label">Dive</span><span class="value">55명</span></div>
+      <div class="kpi"><span class="label">Challenge</span><span class="value">11명</span></div>
+    </div>
+  </header>
+
+  <section class="chart-grid">
+    <article class="card">
+      <h2>레벨별 구성</h2>
+      <p class="sub">전체 192명 중 각 레벨의 비율</p>
+      <div class="chart-box">
+        <canvas id="levelChart" width="520" height="520" aria-label="레벨별 파이차트"></canvas>
+        <div id="levelLegend" class="legend"></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>주요 과목군 구성</h2>
+      <p class="sub">과학·수학·Python 등 과목군별 전체 인원</p>
+      <div class="chart-box">
+        <canvas id="subjectChart" width="520" height="520" aria-label="과목군별 파이차트"></canvas>
+        <div id="subjectLegend" class="legend"></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="section card">
+    <div class="section-title">
+      <h2>레벨별 요약</h2>
+      <span>합계 192명</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>레벨</th><th>인원</th><th>전체 비율</th></tr></thead>
+        <tbody><tr><td><span class='badge badge-enjoy'>Enjoy</span></td><td class='num'>126</td><td class='num'>65.6%</td></tr>
+<tr><td><span class='badge badge-dive'>Dive</span></td><td class='num'>55</td><td class='num'>28.6%</td></tr>
+<tr><td><span class='badge badge-challenge'>Challenge</span></td><td class='num'>11</td><td class='num'>5.7%</td></tr></tbody>
+        <tfoot><tr><th>전체</th><th class="num">192</th><th class="num">100.0%</th></tr></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section class="section card">
+    <div class="section-title">
+      <h2>과목군별 통합 현황</h2>
+      <span>동일 계열 과목을 묶어 집계</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>과목군</th><th>Enjoy</th><th>Dive</th><th>Challenge</th><th>전체</th><th>전체 비율</th></tr>
+        </thead>
+        <tbody><tr><td>과학</td><td class='num'>31</td><td class='num'>18</td><td class='num'>3</td><td class='num strong'>52</td><td class='num'>27.1%</td></tr>
+<tr><td>수학</td><td class='num'>19</td><td class='num'>20</td><td class='num'>5</td><td class='num strong'>44</td><td class='num'>22.9%</td></tr>
+<tr><td>Python</td><td class='num'>27</td><td class='num'>-</td><td class='num'>-</td><td class='num strong'>27</td><td class='num'>14.1%</td></tr>
+<tr><td>로봇</td><td class='num'>17</td><td class='num'>-</td><td class='num'>-</td><td class='num strong'>17</td><td class='num'>8.9%</td></tr>
+<tr><td>App Inventor</td><td class='num'>11</td><td class='num'>-</td><td class='num'>-</td><td class='num strong'>11</td><td class='num'>5.7%</td></tr>
+<tr><td>Vibe Coding</td><td class='num'>10</td><td class='num'>-</td><td class='num'>-</td><td class='num strong'>10</td><td class='num'>5.2%</td></tr>
+<tr><td>Flutter와 앱 개발</td><td class='num'>-</td><td class='num'>9</td><td class='num'>-</td><td class='num strong'>9</td><td class='num'>4.7%</td></tr>
+<tr><td>미래기술탐험</td><td class='num'>-</td><td class='num'>7</td><td class='num'>-</td><td class='num strong'>7</td><td class='num'>3.6%</td></tr>
+<tr><td>C언어</td><td class='num'>6</td><td class='num'>-</td><td class='num'>-</td><td class='num strong'>6</td><td class='num'>3.1%</td></tr>
+<tr><td>Codiny와 AI</td><td class='num'>5</td><td class='num'>-</td><td class='num'>-</td><td class='num strong'>5</td><td class='num'>2.6%</td></tr>
+<tr><td>데이터로 살아 움직이는 도시</td><td class='num'>-</td><td class='num'>-</td><td class='num'>2</td><td class='num strong'>2</td><td class='num'>1.0%</td></tr>
+<tr><td>인공지능의 이해</td><td class='num'>-</td><td class='num'>1</td><td class='num'>-</td><td class='num strong'>1</td><td class='num'>0.5%</td></tr>
+<tr><td>AI 가짜 이미지 탐지 모델</td><td class='num'>-</td><td class='num'>-</td><td class='num'>1</td><td class='num strong'>1</td><td class='num'>0.5%</td></tr></tbody>
+        <tfoot><tr><th>전체</th><th class="num">126</th><th class="num">55</th><th class="num">11</th><th class="num">192</th><th class="num">100.0%</th></tr></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>레벨별 세부 과목 현황</h2>
+      <span>원문 과목명을 기준으로 집계</span>
+    </div>
+    <div class="detail-grid">
+      
+    <section class="detail-card">
+      <div class="section-head">
+        <h3>Enjoy</h3>
+        <span>126명</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>세부 과목</th><th>인원</th><th>Enjoy 내 비율</th></tr></thead>
+          <tbody><tr><td>과학</td><td class='num'>31</td><td class='num'>24.6%</td></tr>
+<tr><td>Python 레벨1</td><td class='num'>17</td><td class='num'>13.5%</td></tr>
+<tr><td>로봇</td><td class='num'>17</td><td class='num'>13.5%</td></tr>
+<tr><td>App Inventor</td><td class='num'>11</td><td class='num'>8.7%</td></tr>
+<tr><td>Vibe Coding</td><td class='num'>10</td><td class='num'>7.9%</td></tr>
+<tr><td>수학 I</td><td class='num'>10</td><td class='num'>7.9%</td></tr>
+<tr><td>Python 레벨2</td><td class='num'>10</td><td class='num'>7.9%</td></tr>
+<tr><td>수학 II</td><td class='num'>9</td><td class='num'>7.1%</td></tr>
+<tr><td>Codiny와 AI</td><td class='num'>5</td><td class='num'>4.0%</td></tr>
+<tr><td>C언어 레벨1</td><td class='num'>4</td><td class='num'>3.2%</td></tr>
+<tr><td>C언어 레벨2</td><td class='num'>2</td><td class='num'>1.6%</td></tr></tbody>
+          <tfoot><tr><th>소계</th><th class="num">126</th><th class="num">100.0%</th></tr></tfoot>
+        </table>
+      </div>
+    </section>
+    
+    <section class="detail-card">
+      <div class="section-head">
+        <h3>Dive</h3>
+        <span>55명</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>세부 과목</th><th>인원</th><th>Dive 내 비율</th></tr></thead>
+          <tbody><tr><td>수학 I</td><td class='num'>14</td><td class='num'>25.5%</td></tr>
+<tr><td>과학 II</td><td class='num'>10</td><td class='num'>18.2%</td></tr>
+<tr><td>Flutter와 앱 개발</td><td class='num'>9</td><td class='num'>16.4%</td></tr>
+<tr><td>과학 I</td><td class='num'>8</td><td class='num'>14.5%</td></tr>
+<tr><td>미래기술탐험 I</td><td class='num'>6</td><td class='num'>10.9%</td></tr>
+<tr><td>수학 II</td><td class='num'>6</td><td class='num'>10.9%</td></tr>
+<tr><td>미래기술탐험 II</td><td class='num'>1</td><td class='num'>1.8%</td></tr>
+<tr><td>인공지능의 이해</td><td class='num'>1</td><td class='num'>1.8%</td></tr></tbody>
+          <tfoot><tr><th>소계</th><th class="num">55</th><th class="num">100.0%</th></tr></tfoot>
+        </table>
+      </div>
+    </section>
+    
+    <section class="detail-card">
+      <div class="section-head">
+        <h3>Challenge</h3>
+        <span>11명</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>세부 과목</th><th>인원</th><th>Challenge 내 비율</th></tr></thead>
+          <tbody><tr><td>수학</td><td class='num'>5</td><td class='num'>45.5%</td></tr>
+<tr><td>과학</td><td class='num'>3</td><td class='num'>27.3%</td></tr>
+<tr><td>데이터로 살아 움직이는 도시</td><td class='num'>2</td><td class='num'>18.2%</td></tr>
+<tr><td>AI를 활용한 가짜 이미지 탐지 모델 만들기</td><td class='num'>1</td><td class='num'>9.1%</td></tr></tbody>
+          <tfoot><tr><th>소계</th><th class="num">11</th><th class="num">100.0%</th></tr></tfoot>
+        </table>
+      </div>
+    </section>
+    
+    </div>
+  </section>
+
+  <div class="note">
+    집계 참고: 원문에 붙어 있던 <strong>“App Inventorywlo***5…”</strong> 항목은 문맥상
+    <strong>App Inventor</strong> 과목명과 수강생 아이디가 붙은 것으로 보아 App Inventor 1명에 포함했습니다.
+  </div>
+
+  <footer>합격자 과목별·레벨별 인원 현황 · 총 192명</footer>
+</main>
+
+<script>
+const levelData = [{"level": "Enjoy", "count": 126}, {"level": "Dive", "count": 55}, {"level": "Challenge", "count": 11}];
+const familyData = [{"subject": "과학", "Enjoy": 31, "Dive": 18, "Challenge": 3, "total": 52}, {"subject": "수학", "Enjoy": 19, "Dive": 20, "Challenge": 5, "total": 44}, {"subject": "Python", "Enjoy": 27, "Dive": 0, "Challenge": 0, "total": 27}, {"subject": "로봇", "Enjoy": 17, "Dive": 0, "Challenge": 0, "total": 17}, {"subject": "App Inventor", "Enjoy": 11, "Dive": 0, "Challenge": 0, "total": 11}, {"subject": "Vibe Coding", "Enjoy": 10, "Dive": 0, "Challenge": 0, "total": 10}, {"subject": "Flutter와 앱 개발", "Enjoy": 0, "Dive": 9, "Challenge": 0, "total": 9}, {"subject": "미래기술탐험", "Enjoy": 0, "Dive": 7, "Challenge": 0, "total": 7}, {"subject": "C언어", "Enjoy": 6, "Dive": 0, "Challenge": 0, "total": 6}, {"subject": "Codiny와 AI", "Enjoy": 5, "Dive": 0, "Challenge": 0, "total": 5}, {"subject": "데이터로 살아 움직이는 도시", "Enjoy": 0, "Dive": 0, "Challenge": 2, "total": 2}, {"subject": "인공지능의 이해", "Enjoy": 0, "Dive": 1, "Challenge": 0, "total": 1}, {"subject": "AI 가짜 이미지 탐지 모델", "Enjoy": 0, "Dive": 0, "Challenge": 1, "total": 1}];
+const palette = [
+  "#3b82f6", "#14b8a6", "#f59e0b", "#8b5cf6", "#ec4899",
+  "#06b6d4", "#84cc16", "#f97316", "#6366f1", "#22c55e",
+  "#a855f7", "#64748b", "#ef4444"
+];
+
+function drawDonut(canvasId, legendId, items, labelKey, valueKey, centerTitle) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext("2d");
+  const total = items.reduce((sum, item) => sum + item[valueKey], 0);
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const radius = 205, inner = 118;
+  let start = -Math.PI / 2;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  items.forEach((item, i) => {
+    const angle = item[valueKey] / total * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, radius, start, start + angle);
+    ctx.closePath();
+    ctx.fillStyle = palette[i % palette.length];
+    ctx.fill();
+    start += angle;
+  });
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, inner, 0, Math.PI * 2);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#667085";
+  ctx.font = "600 24px Malgun Gothic, sans-serif";
+  ctx.fillText(centerTitle, cx, cy - 18);
+  ctx.fillStyle = "#172033";
+  ctx.font = "800 52px Malgun Gothic, sans-serif";
+  ctx.fillText(total + "명", cx, cy + 43);
+
+  const legend = document.getElementById(legendId);
+  legend.innerHTML = items.map((item, i) => {
+    const p = (item[valueKey] / total * 100).toFixed(1);
+    return `<div class="legend-row">
+      <span class="dot" style="background:${palette[i % palette.length]}"></span>
+      <span>${item[labelKey]}</span>
+      <strong>${item[valueKey]}명 · ${p}%</strong>
+    </div>`;
+  }).join("");
+}
+
+drawDonut("levelChart", "levelLegend", levelData, "level", "count", "전체");
+drawDonut("subjectChart", "subjectLegend", familyData.slice(0, 8), "subject", "total", "상위 8개");
+
+function downloadCSV() {
+  const rows = [
+    ["구분", "과목/레벨", "Enjoy", "Dive", "Challenge", "전체"],
+    ...levelData.map(x => ["레벨", x.level, x.level === "Enjoy" ? x.count : "", x.level === "Dive" ? x.count : "", x.level === "Challenge" ? x.count : "", x.count]),
+    ...familyData.map(x => ["과목군", x.subject, x.Enjoy, x.Dive, x.Challenge, x.total])
+  ];
+  const csv = "\uFEFF" + rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\r\n");
+  const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "합격자_과목별_레벨별_인원현황.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
