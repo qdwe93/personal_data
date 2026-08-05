@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="주니어 KAIST 미래기술 및 AI·SW 교육과정 16개 과목 비교 안내">
+  <meta name="theme-color" content="#12372a">
+  <title>주니어 KAIST 과정 한눈에 보기</title>
+  <style>
+    :root {
+      --forest: #12372a;
+      --forest-2: #1f5743;
+      --mint: #dff3e9;
+      --mint-2: #eff8f3;
+      --cream: #f7f4ec;
+      --paper: #fffdf8;
+      --ink: #17221d;
+      --muted: #5d6b64;
+      --line: #d8e2dc;
+      --orange: #e96d3c;
+      --orange-pale: #fff0e9;
+      --blue: #315f91;
+      --blue-pale: #eaf2fb;
+      --shadow: 0 16px 40px rgba(18, 55, 42, .09);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      line-height: 1.65;
+      word-break: keep-all;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+    .skip-link {
+      position: fixed; left: 16px; top: -80px; z-index: 100;
+      padding: 10px 14px; border-radius: 10px; color: white; background: var(--forest);
+    }
+    .skip-link:focus { top: 16px; }
+    .wrap { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 28px 0 72px; color: white;
+      background:
+        radial-gradient(circle at 88% 18%, rgba(223, 243, 233, .18) 0 120px, transparent 121px),
+        radial-gradient(circle at 78% 75%, rgba(233, 109, 60, .16) 0 180px, transparent 181px),
+        var(--forest);
+    }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.03em; }
+    .brand-mark {
+      display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px;
+      color: var(--forest); background: var(--mint); font-weight: 900;
+    }
+    .source-link { color: #d9eee3; font-size: .9rem; text-underline-offset: 4px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 72px; align-items: end; padding-top: 70px; }
+    .eyebrow { margin: 0 0 14px; color: #a9dcc5; font-size: .84rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 780px; font-size: clamp(2.45rem, 6vw, 5.2rem); line-height: 1.06; letter-spacing: -.065em; }
+    .hero-copy { margin: 24px 0 0; max-width: 680px; color: #dcebe4; font-size: clamp(1rem, 2vw, 1.22rem); }
+    .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .stat { padding: 22px; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: rgba(255,255,255,.07); backdrop-filter: blur(8px); }
+    .stat strong { display: block; font-size: 2rem; line-height: 1.1; }
+    .stat span { color: #cfe3d8; font-size: .9rem; }
+
+    main { padding-bottom: 80px; }
+    .guide { margin-top: -34px; position: relative; z-index: 2; }
+    .guide-panel { padding: 30px; border-radius: var(--radius); background: var(--paper); box-shadow: var(--shadow); }
+    .section-kicker { color: var(--orange); font-size: .82rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+    h2 { margin: 4px 0 0; font-size: clamp(1.75rem, 4vw, 2.65rem); line-height: 1.2; letter-spacing: -.045em; }
+    .guide-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
+    .guide-item { padding: 18px; border-radius: 16px; background: var(--mint-2); }
+    .guide-item b { display: block; margin-bottom: 4px; color: var(--forest-2); }
+    .guide-item span { color: var(--muted); font-size: .92rem; }
+
+    .catalog { padding-top: 72px; }
+    .catalog-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; }
+    .catalog-intro { max-width: 650px; }
+    .catalog-intro p { margin: 12px 0 0; color: var(--muted); }
+    .result-count { color: var(--forest-2); font-weight: 800; white-space: nowrap; }
+    .tools {
+      position: sticky; top: 12px; z-index: 10;
+      display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 16px;
+      margin: 26px 0; padding: 14px; border: 1px solid var(--line); border-radius: 18px;
+      background: rgba(255, 253, 248, .94); box-shadow: 0 10px 30px rgba(18,55,42,.07); backdrop-filter: blur(12px);
+    }
+    .search { position: relative; }
+    .search input { width: 100%; min-height: 48px; padding: 11px 16px 11px 44px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: white; outline: none; }
+    .search input:focus { border-color: var(--forest-2); box-shadow: 0 0 0 3px rgba(31,87,67,.13); }
+    .search::before { content: "⌕"; position: absolute; left: 16px; top: 7px; color: var(--forest-2); font-size: 1.5rem; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .chip { min-height: 44px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; background: white; cursor: pointer; font-weight: 750; font-size: .9rem; }
+    .chip:hover { border-color: var(--forest-2); }
+    .chip[aria-pressed="true"] { color: white; border-color: var(--forest); background: var(--forest); }
+
+    .courses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .course { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); box-shadow: 0 8px 24px rgba(18,55,42,.045); }
+    .course[hidden] { display: none; }
+    .course-summary { width: 100%; padding: 24px; border: 0; background: transparent; text-align: left; cursor: pointer; }
+    .course-summary:hover { background: #fbf9f2; }
+    .course-summary:focus-visible { outline: 3px solid rgba(49,95,145,.35); outline-offset: -3px; }
+    .course-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .badges { display: flex; gap: 7px; flex-wrap: wrap; }
+    .badge { display: inline-flex; align-items: center; min-height: 28px; padding: 4px 9px; border-radius: 999px; font-size: .76rem; font-weight: 850; }
+    .badge.future { color: var(--forest-2); background: var(--mint); }
+    .badge.ai { color: var(--blue); background: var(--blue-pale); }
+    .badge.level { color: #994321; background: var(--orange-pale); }
+    .toggle-icon { display: grid; place-items: center; width: 34px; height: 34px; flex: 0 0 auto; border-radius: 50%; color: var(--forest); background: var(--mint-2); transition: transform .2s ease; }
+    .course.open .toggle-icon { transform: rotate(45deg); }
+    .course h3 { margin: 17px 0 8px; font-size: 1.43rem; line-height: 1.25; letter-spacing: -.035em; }
+    .course-desc { margin: 0; color: var(--muted); }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 17px; color: var(--forest-2); font-size: .9rem; font-weight: 750; }
+    .course-detail { display: none; padding: 0 24px 26px; }
+    .course.open .course-detail { display: block; }
+    .detail-divider { height: 1px; margin-bottom: 22px; background: var(--line); }
+    .course-detail h4 { margin: 22px 0 9px; color: var(--forest); font-size: 1rem; }
+    .course-detail ul { margin: 0; padding-left: 22px; color: var(--muted); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: white; }
+    table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: .88rem; }
+    th, td { padding: 11px 13px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--forest); background: var(--mint-2); font-size: .8rem; }
+    tr:last-child td { border-bottom: 0; }
+    td:first-child { width: 62px; color: var(--forest-2); font-weight: 800; white-space: nowrap; }
+    .note { padding: 13px 15px; border-left: 3px solid var(--orange); border-radius: 0 10px 10px 0; color: #70402d; background: var(--orange-pale); font-size: .9rem; }
+    .empty { display: none; padding: 48px 20px; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--muted); background: var(--paper); text-align: center; }
+    .empty.show { display: block; }
+
+    .decision { margin-top: 76px; padding: 42px; border-radius: var(--radius); color: white; background: var(--forest); }
+    .decision h2 { max-width: 720px; }
+    .decision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 26px; }
+    .decision-card { padding: 20px; border: 1px solid rgba(255,255,255,.15); border-radius: 16px; background: rgba(255,255,255,.07); }
+    .decision-card b { display: block; margin-bottom: 7px; color: #b9e3cf; }
+    .decision-card span { color: #e0ede7; font-size: .92rem; }
+    footer { padding: 36px 0; color: var(--muted); background: #ebe9e1; font-size: .88rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 28px; }
+    footer p { margin: 0; }
+    footer a { color: var(--forest-2); text-underline-offset: 3px; }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 34px; padding-top: 52px; }
+      .hero-stats { max-width: 520px; }
+      .guide-grid { grid-template-columns: repeat(2, 1fr); }
+      .tools { grid-template-columns: 1fr; }
+      .courses { grid-template-columns: 1fr; }
+      .decision-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .wrap { width: min(100% - 24px, 1180px); }
+      .hero { padding-top: 18px; padding-bottom: 58px; }
+      .topbar { align-items: flex-start; }
+      .source-link { max-width: 110px; text-align: right; }
+      .hero-grid { padding-top: 42px; }
+      h1 { font-size: clamp(2.3rem, 13vw, 3.4rem); }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .stat { padding: 16px; }
+      .guide-panel { padding: 22px 18px; }
+      .guide-grid { grid-template-columns: 1fr; }
+      .catalog { padding-top: 54px; }
+      .catalog-head { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .tools { top: 6px; margin-inline: -4px; padding: 9px; border-radius: 16px; }
+      .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+      .filters::-webkit-scrollbar { display: none; }
+      .chip { flex: 0 0 auto; }
+      .course-summary { padding: 20px 18px; }
+      .course-detail { padding: 0 18px 22px; }
+      .course h3 { font-size: 1.28rem; }
+      .decision { margin-top: 56px; padding: 28px 20px; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+    @media print {
+      body { background: white; }
+      .hero { color: black; background: white; padding-bottom: 20px; }
+      .hero-copy, .eyebrow, .stat span { color: #333; }
+      .topbar, .tools, .toggle-icon, .decision, footer { display: none; }
+      .hero-grid { grid-template-columns: 1fr; padding-top: 20px; }
+      .hero-stats { display: none; }
+      .guide { margin-top: 0; }
+      .guide-panel, .course { box-shadow: none; }
+      .courses { display: block; }
+      .course { break-inside: avoid; margin-bottom: 16px; }
+      .course[hidden] { display: block; }
+      .course-detail { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#catalog">과목 목록으로 바로가기</a>
+  <header class="hero">
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand"><span class="brand-mark">J</span><span>주니어 KAIST 과정 안내</span></div>
+        <a class="source-link" href="#sources">공식 출처 확인</a>
+      </div>
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Future Tech · AI &amp; Software</p>
+          <h1>우리 아이에게 맞는<br>기술 수업 찾기</h1>
+          <p class="hero-copy">로봇과 우주부터 Python과 딥러닝까지. 학년, 관심사, 코딩 경험을 기준으로 16개 과정을 한눈에 비교해 보세요.</p>
+        </div>
+        <div class="hero-stats" aria-label="과정 통계">
+          <div class="stat"><strong>16</strong><span>전체 과목</span></div>
+          <div class="stat"><strong>2</strong><span>교육 분야</span></div>
+          <div class="stat"><strong>3</strong><span>AI·SW 단계</span></div>
+          <div class="stat"><strong>6</strong><span>기본 차시</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="guide wrap" aria-labelledby="quick-title">
+      <div class="guide-panel">
+        <span class="section-kicker">Quick guide</span>
+        <h2 id="quick-title">관심사로 먼저 골라보세요</h2>
+        <div class="guide-grid">
+          <div class="guide-item"><b>로봇·우주·바이오</b><span>미래기술에서 과학과 공학을 폭넓게 탐색</span></div>
+          <div class="guide-item"><b>코딩 첫걸음</b><span>Codiny, App Inventor, Python 레벨1부터 시작</span></div>
+          <div class="guide-item"><b>AI·데이터 심화</b><span>인공지능의 이해와 Data Science로 원리 탐구</span></div>
+          <div class="guide-item"><b>프로젝트 도전</b><span>선발형 Challenge에서 실제 AI·도시 데이터 문제 해결</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog wrap" id="catalog" aria-labelledby="catalog-title">
+      <div class="catalog-head">
+        <div class="catalog-intro">
+          <span class="section-kicker">Course catalog</span>
+          <h2 id="catalog-title">과목별 상세 안내</h2>
+          <p>과목 카드를 누르면 차시별 학습 내용을 볼 수 있습니다. 검색어나 분야·단계 필터를 함께 사용할 수 있습니다.</p>
+        </div>
+        <div class="result-count" id="resultCount" aria-live="polite">16개 과목</div>
+      </div>
+      <div class="tools">
+        <label class="search">
+          <span style="position:absolute;width:1px;height:1px;overflow:hidden">과목 검색</span>
+          <input id="searchInput" type="search" placeholder="예: 로봇, Python, 데이터" autocomplete="off">
+        </label>
+        <div class="filters" aria-label="과목 필터">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true">전체</button>
+          <button class="chip" type="button" data-filter="future" aria-pressed="false">미래기술</button>
+          <button class="chip" type="button" data-filter="enjoy" aria-pressed="false">Enjoy</button>
+          <button class="chip" type="button" data-filter="dive" aria-pressed="false">Dive</button>
+          <button class="chip" type="button" data-filter="challenge" aria-pressed="false">Challenge</button>
+        </div>
+      </div>
+      <div class="courses" id="courseList"></div>
+      <div class="empty" id="emptyState">조건에 맞는 과목이 없습니다. 검색어 또는 필터를 바꿔보세요.</div>
+    </section>
+
+    <section class="decision wrap" aria-labelledby="decision-title">
+      <span class="section-kicker" style="color:#a9dcc5">Before choosing</span>
+      <h2 id="decision-title">신청 전에 꼭 확인하세요</h2>
+      <div class="decision-grid">
+        <div class="decision-card"><b>학년과 경험</b><span>권장 학년뿐 아니라 코딩 경험과 관심 분야를 함께 보세요. 처음인 초등학생은 블록 코딩, 처음인 중학생은 Python이 공식 권장 출발점입니다.</span></div>
+        <div class="decision-card"><b>Challenge 선발 조건</b><span>Dive 동일 계열 과목에서 최종 성적 80 이상인 우수자 대상이며, 과목 계열 간 교차 지원은 불가합니다.</span></div>
+        <div class="decision-card"><b>모집 공고 재확인</b><span>개설 시기, 수강료, 준비물, 정확한 튜터링 시간은 실제 수강 신청 공고에서 별도로 확인해야 합니다.</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="sources">
+    <div class="wrap footer-inner">
+      <p>2026년 8월 5일 주니어 KAIST 공식 교육과정 페이지를 기준으로 정리했습니다.</p>
+      <p><a href="https://junior.kaist.ac.kr/?m1=page&amp;menu_id=1067" target="_blank" rel="noopener">미래기술 공식 페이지</a> · <a href="https://junior.kaist.ac.kr/?m1=page&amp;menu_id=1066" target="_blank" rel="noopener">AI·SW 공식 페이지</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const courses = [
+      {
+        title: "Enjoy 로봇", field: "future", level: "enjoy", audience: "초4~초5",
+        desc: "로봇의 움직임·감지·제어 원리를 생활 속 사례로 이해하고, 하드웨어와 소프트웨어가 함께 작동하는 원리를 탐구합니다.",
+        method: "비실시간 동영상 + e-Book + 차시별 실시간 튜터링",
+        fit: ["로봇이 움직이고 주변을 감지하는 방식이 궁금한 아이", "기계 장치와 소프트웨어의 연결을 사례로 배우고 싶은 아이"],
+        lessons: [["1차시","걷고 뛰는 로봇","링크, 조인트, 구동기"],["2차시","로켓배송 어떻게 가능할까?","센서"],["3차시","재난현장에서 일하는 로봇","좌표계, 자유도, 매니퓰레이터, 엔드이펙터"],["4차시","로봇과 우주탐사","수상·공중·지상 로봇의 이동 방식"],["5차시","로봇을 움직이게 하는 비밀","제어, 시스템"],["6차시","소프트웨어로 더 똑똑해지는 로봇","하드웨어, 소프트웨어, 시뮬레이터, 머신러닝"]]
+      },
+      {
+        title: "Dive 미래기술1", field: "future", level: "dive", audience: "초6~중1",
+        desc: "보안·헬스케어·에너지·데이터를 통해 기술의 작동 원리와 사회적 의미를 살펴봅니다.",
+        method: "비실시간 동영상 + e-Book + 차시별 실시간 튜터링", note: "미래기술1과 2는 반드시 순서대로 들을 필요가 없습니다.",
+        fit: ["첨단기술을 한 분야에 한정하지 않고 폭넓게 탐색하고 싶은 아이", "보안, 건강, 에너지 또는 데이터에 관심이 있는 아이"],
+        lessons: [["1차시","보안의 미래 - 만물에 대한 해킹 -","해킹, 실생활의 취약점, 자율주행차"],["2차시","웨어러블 기기와 인공지능을 활용한 건강 관리 기술","센서, 건강 측정, 데이터 기반 건강 관리"],["3차시","알기쉬운 태양전지: 빛을 전기로","태양광 발전, 광기전 효과, 밴드갭, 이론적 최고 효율"],["4차시","웨어러블 로봇과 기초수학","기하학, 경우의 수, 속도와 가속도"],["5차시","종이접기, 로봇, 우주","종이접기의 공학적 장점, 로봇 설계, 우주개척"],["6차시","데이터로 펼치는 세상","데이터 분석·시각화, 의사결정, 한계와 윤리"]]
+      },
+      {
+        title: "Dive 미래기술2", field: "future", level: "dive", audience: "초6~중1",
+        desc: "우주·로봇·바이오·환경으로 시야를 넓혀 서로 다른 과학·공학 분야의 연결을 탐구합니다.",
+        method: "비실시간 동영상 + e-Book + 차시별 실시간 튜터링", note: "미래기술1과 2는 반드시 순서대로 들을 필요가 없습니다.",
+        fit: ["우주, 로봇, 생명과학, 환경에 두루 관심이 있는 아이", "미래기술이 사람과 지구에 줄 수 있는 도움을 탐구하고 싶은 아이"],
+        lessons: [["1차시","오늘의 우주날씨를 알려드립니다","우주환경, 지구에서 우주를 위협하는 환경"],["2차시","벽을 타고 올라가는 MARVEL 로봇의 비밀","휴머노이드 로봇의 개념과 원리"],["3차시","몸 속을 들여다보는 작은 실험실, 장기칩","동물실험 대체 기술, 장기 구현 기술"],["4차시","신체를 감지하는 기술에서 마음을 위한 기술로","인간과 컴퓨터의 상호작용"],["5차시","바이오플라스틱? 생분해성 플라스틱?","바이오플라스틱, 생분해성 플라스틱"],["6차시","우리와 지구를 살리기 위한 미생물식품","미생물식품, 기후변화"]]
+      },
+      {
+        title: "Codiny와 AI", field: "ai", level: "enjoy", audience: "초4~초6",
+        desc: "블록 코딩으로 인공지능의 기본 원리와 코딩의 흐름을 경험하는 입문 과정입니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "권장 연계: Codiny와 AI → Python 레벨1 → Python 레벨2",
+        fit: ["텍스트 문법보다 블록 코딩으로 AI를 처음 접하고 싶은 아이", "이후 Python으로 이어갈 기초를 만들고 싶은 아이"],
+        lessons: [["1차시","인공지능의 이해, Codiny 시작하기","인공지능 기초, Codiny 환경"],["2차시","함수의 이해와 활용","함수의 개념과 활용"],["3차시","엑셀 데이터 분석하기","엑셀 기반 데이터 분석"],["4차시","AI 블록으로 사용자와 소통하기","AI 블록, 사용자 상호작용"],["5차시","지도 학습과 회귀 분석으로 사용자 예측하기","지도학습, 회귀 분석, 예측"],["6차시","API 데이터를 사용해 AI 코딩하기","API 데이터 연동, AI 코딩"]]
+      },
+      {
+        title: "App Inventor", field: "ai", level: "enjoy", audience: "초4~초6",
+        desc: "카메라·센서·위치 정보 등을 활용해 실제로 작동하는 모바일 앱을 구현합니다.",
+        method: "e-Book + 차시별 Zoom 튜터링",
+        fit: ["스마트폰 앱을 직접 만들어 보고 싶은 아이", "코딩 결과가 화면과 동작으로 바로 나타날 때 흥미를 느끼는 아이"],
+        lessons: [["1차시","앱 프로그래밍","앱 프로그래밍 기초"],["2차시","카메라, 센서, 캔버스 개념 탐색하기","카메라, 센서, 캔버스"],["3차시","소프트웨어 자작 과정 탐험","소프트웨어 제작 과정"],["4차시","변수와 리스트, 위치 데이터와 구글맵","변수, 리스트, 위치 데이터, 구글맵"],["5차시","함수 및 내부데이터베이스 활용하기","함수, 내부 데이터베이스"],["6차시","소프트웨어 구현과 프로젝트 관리하기","프로젝트 구현, 소프트웨어 관리"]]
+      },
+      {
+        title: "Vibe Coding", field: "ai", level: "enjoy", audience: "초4~중2",
+        desc: "생성형 AI와 협업해 프로젝트를 진행하며 개발 과정과 구조적 프롬프트를 경험합니다.",
+        method: "e-Book + 차시별 Zoom 튜터링",
+        fit: ["생성형 AI를 제작 도구로 활용해 보고 싶은 아이", "아이디어, 논리, 화면 디자인을 연결하고 싶은 아이"],
+        lessons: [["1차시","Hello, AI World!","생성형 AI 활용 입문"],["2차시","AI가 잘 알아듣는 구조적 프롬프트 만들기","구조적 프롬프트 설계"],["3차시","나만의 로직 만들기","프롬프트 기반 로직"],["4차시","에러메시지와 AI를 활용한 수정","에러 해석, AI 디버깅"],["5차시","바이브 디자인, 바이브 UI","UI 설계, 바이브 디자인"],["6차시","프롬프트와 프로그램의 저작권","프롬프트·프로그램 저작권"]]
+      },
+      {
+        title: "Python 레벨1", field: "ai", level: "enjoy", audience: "초4~중2",
+        desc: "파이썬의 핵심 문법을 익히고 기초 프로젝트로 연결하는 텍스트 코딩 입문 과정입니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "공식 안내는 코딩이 처음인 중학생에게 Python부터 시작하기를 권장합니다.",
+        fit: ["블록 코딩을 넘어 텍스트 코딩을 시작하고 싶은 아이", "AI·데이터로 이어지는 범용 언어를 배우고 싶은 아이"],
+        lessons: [["1차시","자료형과 연산","자료형과 연산"],["2차시","변수와 입출력","변수, 입력, 출력"],["3차시","자료 구조","리스트·딕셔너리 등"],["4차시","제어 구조","조건문, 반복문"],["5차시","함수 기초","함수 기초"],["6차시","최종 프로젝트","기초 프로젝트 구현"]]
+      },
+      {
+        title: "Python 레벨2", field: "ai", level: "enjoy", audience: "초4~중2",
+        desc: "파일·객체·모듈 단위로 코드를 구조화하고 예외 처리와 테스트까지 배우는 심화 과정입니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "Python 레벨1 이후의 공식 권장 과정입니다.",
+        fit: ["Python 기초 문법과 제어 구조를 이미 이해한 아이", "더 구조적인 프로그램과 개발 습관을 배우고 싶은 아이"],
+        lessons: [["1차시","파일 처리","파일 입출력"],["2차시","객체 지향 프로그래밍 기초","객체 지향 기초"],["3차시","객체 지향 프로그래밍 심화","객체 지향 심화"],["4차시","모듈","모듈 활용"],["5차시","예외 처리와 테스트","예외 처리, 테스트"],["6차시","최종 프로젝트","응용 프로젝트 구현"]]
+      },
+      {
+        title: "C언어 레벨1", field: "ai", level: "enjoy", audience: "초4~중2",
+        desc: "프로그램 구조, 변수, 조건문, 자료형, 연산, 반복문으로 문제 해결의 기초를 다집니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "권장 연계: C언어 레벨1 → C언어 레벨2",
+        fit: ["컴퓨터와 프로그래밍의 기본 구조를 이해하고 싶은 아이", "조건·반복 논리를 작은 프로그램으로 연습하고 싶은 아이"],
+        lessons: [["1차시","프로그래밍을 이용한 문제해결","문제 해결과 프로그래밍 사고"],["2차시","프로그램의 구조와 변수","프로그램 구조, 변수"],["3차시","조건에 따라 결과가 달라지는 프로그램","조건문"],["4차시","여러 가지 자료와 연산","자료형과 연산"],["탐구1","단위 변환기 만들기","단위 변환 프로그램"],["5차시","어떤 일을 반복하는 프로그램","반복문"],["6차시","이제 여러분도 프로그래머","종합 실습"],["탐구2","다용도 계산기 만들기","계산기 프로그램"]]
+      },
+      {
+        title: "C언어 레벨2", field: "ai", level: "enjoy", audience: "초4~중2",
+        desc: "함수, 배열, 구조체, 재귀 알고리즘, 포인터로 복합적인 프로그램을 설계합니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "C언어 레벨1 이후의 공식 권장 과정입니다.",
+        fit: ["C언어 기초와 조건문·반복문을 이해한 아이", "메모리와 포인터, 알고리즘을 더 깊게 배우고 싶은 아이"],
+        lessons: [["1차시","함수와 배열","함수와 배열"],["2차시","구조체와 열거형","구조체와 열거형"],["3차시","재귀 알고리즘","재귀 알고리즘"],["4차시","포인터","포인터 기초"],["탐구1","하노이의 탑 문제 해결하기","하노이의 탑"],["5차시","포인터와 구조체","포인터와 구조체"],["6차시","포인터와 배열","포인터와 배열"],["탐구2","일정 관리 프로그램 만들기","일정 관리 프로그램"]]
+      },
+      {
+        title: "인공지능의 이해", field: "ai", level: "dive", audience: "중1~고2",
+        desc: "AI 전반의 원리와 머신러닝·강화학습·딥러닝, 윤리까지 균형 있게 탐구합니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "Enjoy 과정의 이해를 바탕으로 실제 적용과 탐구가 가능한 학생에게 권장됩니다.",
+        fit: ["AI를 사용해 보는 것을 넘어 작동 원리를 이해하고 싶은 학생", "AI의 성능과 윤리적 영향을 함께 생각하고 싶은 학생"],
+        lessons: [["1차시","인공지능 알아보기","인공지능 개요"],["2차시","환경 구축과 데이터 다루기","개발 환경, 데이터 처리"],["3차시","머신러닝 및 주요 알고리즘","머신러닝, 핵심 알고리즘"],["4차시","비지도 학습과 강화학습","비지도학습, 강화학습"],["5차시","딥러닝의 이해와 응용","딥러닝 이해와 응용"],["6차시","인공지능의 발견과 윤리적 고려","AI 윤리와 사회적 고려"]]
+      },
+      {
+        title: "Data Science", field: "ai", level: "dive", audience: "중1~고2",
+        desc: "친숙한 사회 질문을 데이터로 살펴보며 통계적 사고와 데이터 기반 문제 해결력을 기릅니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "Enjoy 과정의 이해를 바탕으로 실제 적용과 탐구가 가능한 학생에게 권장됩니다.",
+        fit: ["사회문제나 주장을 숫자로 검증해 보고 싶은 학생", "통계, 공공데이터, 그래프 해석에 관심이 있는 학생"],
+        lessons: [["1차시","왜 데이터를 공부해야 할까요?","데이터 학습의 필요성"],["2차시","청소년의 비만 문제는 사회문제","사회문제 데이터 분석"],["3차시","수능 한파 진실일까?","가설 검증과 데이터 읽기"],["4차시","전국의 내 또래 친구들은 얼마나 될까?","공공데이터 해석"],["5차시","행복의 조건은 무엇일까?","행복 지표 분석"],["6차시","너의 MBTI는?","성향 데이터 분석"]]
+      },
+      {
+        title: "Flutter와 앱 개발", field: "ai", level: "dive", audience: "중1~고2",
+        desc: "Flutter와 Dart로 사용자 상호작용과 데이터를 표현하는 완성도 있는 앱을 개발합니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "Enjoy 과정의 이해를 바탕으로 실제 적용과 탐구가 가능한 학생에게 권장됩니다.",
+        fit: ["입문용 블록 앱 개발을 넘어 실제 개발 도구를 경험하고 싶은 학생", "완성한 앱을 게시하는 흐름까지 경험하고 싶은 학생"],
+        lessons: [["1차시","Flutter와 하이브리드 앱 개발","Flutter와 하이브리드 앱"],["2차시","Flutter와 Dart 깊이 이해하기","Dart 문법과 구조"],["3차시","나만의 명함 앱 만들기","명함 앱 구현"],["4차시","Flutter앱과 상호작용하기","사용자 상호작용"],["5차시","다양한 데이터 표현하기","데이터 시각화와 표현"],["6차시","나만의 블로그 앱을 만들고 게시하기","블로그 앱 제작, 게시"]]
+      },
+      {
+        title: "딥러닝 이미지 검색 시스템", field: "ai", level: "challenge", audience: "선발 과정",
+        desc: "딥러닝 모델로 이미지 검색 시스템을 구현하고 차원 축소와 대조학습으로 성능을 높입니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "Dive 동일 계열 최종 성적 80 이상 우수자 선발. 계열 간 교차 지원 불가.",
+        fit: ["이미지 AI 모델을 직접 학습하고 구현하고 싶은 학생", "모델 결과를 시각화하고 성능을 개선하고 싶은 학생"],
+        lessons: [["1차시","딥러닝 파헤치기","딥러닝 기초"],["2차시","나의 첫 인공지능 모델","기초 이미지 모델 학습"],["3차시","데이터 차원 축소 기법","차원 축소와 시각화"],["4차시","딥러닝 기반 이미지 검색 시스템 구현","검색 시스템 구현"],["5차시","대조학습을 통한 이미지 검색 향상","대조학습"],["6차시","이미지 검색 기술의 완성","검색 시스템 고도화"]]
+      },
+      {
+        title: "AI 가짜 이미지 탐지", field: "ai", level: "challenge", audience: "선발 과정",
+        desc: "가짜 이미지의 이진 분류부터 적대적 공격·방어, 데이터 증강과 적대적 학습을 다룹니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "Dive 동일 계열 최종 성적 80 이상 우수자 선발. 계열 간 교차 지원 불가.",
+        fit: ["생성 이미지와 진짜 이미지를 구별하는 AI에 관심 있는 학생", "모델 공격과 방어의 관점을 탐구하고 싶은 학생"],
+        lessons: [["1차시","가짜 이미지 탐지와 이진 분류","가짜 이미지 탐지, 이진 분류"],["2차시","End-to-end 탐지 모델 학습","End-to-end 모델"],["3차시","가짜 이미지의 반격","가짜 이미지 생성·대응"],["4차시","적대적 공격과 방어","적대적 공격과 방어"],["5차시","데이터 증강 파헤치기","데이터 증강"],["6차시","적대적 학습 파헤치기","적대적 학습"]]
+      },
+      {
+        title: "데이터로 살아 움직이는 도시", field: "ai", level: "challenge", audience: "선발 과정",
+        desc: "도시 데이터를 정제·시각화·분석하며 시간과 장소에 따라 변화하는 도시의 패턴을 찾습니다.",
+        method: "e-Book + 차시별 Zoom 튜터링", note: "Dive 동일 계열 최종 성적 80 이상 우수자 선발. 계열 간 교차 지원 불가.",
+        fit: ["교통·인구·지역 문제를 실제 데이터로 분석하고 싶은 학생", "데이터 정제부터 시각화와 패턴 발견까지 경험하고 싶은 학생"],
+        lessons: [["1차시","데이터로 살아 움직이는 도시","도시 데이터 이해"],["2차시","까다로운 데이터 요리하기","데이터 정제와 전처리"],["3차시","그래프로 그리는 우리 동네 이야기","지역 데이터 시각화"],["4차시","시간을 달리는 따릉이","시계열 이동 데이터 분석"],["5차시","도시는 어디에 사람이 모일까","인구 밀집 패턴"],["6차시","내가 찾은 도시의 패턴","도시 데이터 패턴 발견"]]
+      }
+    ];
+
+    const list = document.querySelector("#courseList");
+    const search = document.querySelector("#searchInput");
+    const count = document.querySelector("#resultCount");
+    const empty = document.querySelector("#emptyState");
+    const chips = [...document.querySelectorAll(".chip")];
+    let activeFilter = "all";
+
+    const escapeHtml = value => String(value).replace(/[&<>"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
+    const fieldLabel = field => field === "future" ? "미래기술" : "AI·SW";
+    const levelLabel = level => ({enjoy:"Enjoy", dive:"Dive", challenge:"Challenge"}[level]);
+
+    function renderCourses() {
+      list.innerHTML = courses.map((course, index) => {
+        const lessons = course.lessons.map(row => `<tr>${row.map(cell => `<td>${escapeHtml(cell)}</td>`).join("")}</tr>`).join("");
+        const fits = course.fit.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+        const searchable = [course.title, course.desc, course.audience, course.fit.join(" "), course.lessons.flat().join(" ")].join(" ");
+        return `<article class="course" data-field="${course.field}" data-level="${course.level}" data-search="${escapeHtml(searchable.toLowerCase())}">
+          <button class="course-summary" type="button" aria-expanded="false" aria-controls="course-${index}">
+            <span class="course-top"><span class="badges"><span class="badge ${course.field}">${fieldLabel(course.field)}</span><span class="badge level">${levelLabel(course.level)}</span></span><span class="toggle-icon" aria-hidden="true">＋</span></span>
+            <h3>${escapeHtml(course.title)}</h3>
+            <p class="course-desc">${escapeHtml(course.desc)}</p>
+            <span class="meta"><span>권장 대상 · ${escapeHtml(course.audience)}</span><span>기본 ${course.lessons.filter(row => row[0].includes("차시")).length}차시</span></span>
+          </button>
+          <div class="course-detail" id="course-${index}">
+            <div class="detail-divider"></div>
+            <h4>학습 방식</h4><p class="course-desc">${escapeHtml(course.method)}</p>
+            ${course.note ? `<p class="note">${escapeHtml(course.note)}</p>` : ""}
+            <h4>이런 관심과 잘 맞아요</h4><ul>${fits}</ul>
+            <h4>차시별 학습 내용</h4>
+            <div class="table-wrap"><table><thead><tr><th>구분</th><th>주제</th><th>학습 개념</th></tr></thead><tbody>${lessons}</tbody></table></div>
+          </div>
+        </article>`;
+      }).join("");
+
+      list.querySelectorAll(".course-summary").forEach(button => {
+        button.addEventListener("click", () => {
+          const card = button.closest(".course");
+          const open = card.classList.toggle("open");
+          button.setAttribute("aria-expanded", String(open));
+        });
+      });
+    }
+
+    function applyFilters() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      list.querySelectorAll(".course").forEach(card => {
+        const filterMatch = activeFilter === "all" || card.dataset.field === activeFilter || card.dataset.level === activeFilter;
+        const searchMatch = !query || card.dataset.search.includes(query);
+        card.hidden = !(filterMatch && searchMatch);
+        if (!card.hidden) visible += 1;
+      });
+      count.textContent = `${visible}개 과목`;
+      empty.classList.toggle("show", visible === 0);
+    }
+
+    chips.forEach(chip => chip.addEventListener("click", () => {
+      activeFilter = chip.dataset.filter;
+      chips.forEach(item => item.setAttribute("aria-pressed", String(item === chip)));
+      applyFilters();
+    }));
+    search.addEventListener("input", applyFilters);
+    renderCourses();
+    applyFilters();
+  </script>
+</body>
+</html>
