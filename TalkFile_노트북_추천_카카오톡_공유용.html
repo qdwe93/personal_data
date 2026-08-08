@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#172554">
+  <meta name="description" content="6학년 남학생용 외장 그래픽·VRAM 8GB 이상 노트북 추천과 삼성·LG 비교">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="6학년 노트북 추천 — VRAM 8GB 이상">
+  <meta property="og:description" content="RTX 5060 추천 모델과 삼성·LG 동급 비교를 한 페이지로 정리했습니다.">
+  <title>6학년 노트북 추천 | VRAM 8GB 이상</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #172554;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #e4e7ec;
+      --surface: #ffffff;
+      --bg: #f4f7fb;
+      --good: #067647;
+      --good-bg: #ecfdf3;
+      --warn: #b54708;
+      --warn-bg: #fff7ed;
+      --shadow: 0 12px 32px rgba(23, 37, 84, .09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 92% 0%, rgba(96, 165, 250, .18), transparent 26rem),
+        var(--bg);
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    button, a { font: inherit; }
+    a { color: inherit; }
+    .page { width: min(100% - 28px, 820px); margin: 0 auto; padding-bottom: 48px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      margin: 14px 0 18px;
+      padding: 28px 24px 24px;
+      color: #fff;
+      background: linear-gradient(145deg, #172554 0%, #1e3a8a 58%, #2563eb 100%);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 170px; height: 170px;
+      right: -65px; top: -80px;
+      border: 28px solid rgba(255,255,255,.09);
+      border-radius: 50%;
+    }
+    .eyebrow { margin: 0 0 8px; font-size: 13px; font-weight: 800; letter-spacing: .08em; opacity: .8; }
+    h1 { max-width: 620px; margin: 0; font-size: clamp(28px, 8vw, 44px); line-height: 1.12; letter-spacing: -.04em; }
+    .lead { max-width: 620px; margin: 14px 0 18px; color: #dbeafe; font-size: 15px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 7px 10px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; background: rgba(255,255,255,.1); font-size: 12px; font-weight: 800; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+    .action {
+      min-height: 44px; padding: 10px 15px; border: 0; border-radius: 12px;
+      font-weight: 800; cursor: pointer; transition: transform .15s ease, opacity .15s ease;
+    }
+    .action:active { transform: scale(.98); }
+    .action.primary { color: var(--navy); background: #fff; }
+    .action.secondary { color: #fff; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.26); }
+    #share-status { min-height: 21px; margin: 9px 0 0; color: #bfdbfe; font-size: 12px; }
+
+    .quick-pick {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 24px;
+    }
+    .quick-pick a {
+      display: block; padding: 13px 14px; text-decoration: none; background: var(--surface);
+      border: 1px solid var(--line); border-radius: 14px; font-size: 13px; font-weight: 800;
+    }
+    .quick-pick span { display: block; margin-top: 2px; color: var(--blue); font-size: 12px; }
+
+    section { margin-top: 26px; scroll-margin-top: 14px; }
+    .section-kicker { margin: 0 0 4px; color: var(--blue); font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+    h2 { margin: 0 0 12px; color: var(--navy); font-size: 23px; line-height: 1.25; letter-spacing: -.025em; }
+    .section-note { margin: -4px 0 14px; color: var(--muted); font-size: 13px; }
+
+    .winner {
+      display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start;
+      padding: 20px; background: var(--surface); border: 2px solid #93c5fd; border-radius: 20px; box-shadow: var(--shadow);
+    }
+    .rank {
+      display: grid; place-items: center; width: 44px; height: 44px;
+      color: #fff; background: var(--blue); border-radius: 14px; font-size: 20px; font-weight: 900;
+    }
+    .winner h3, .card h3 { margin: 0; color: var(--navy); font-size: 18px; line-height: 1.35; }
+    .price { margin: 4px 0 8px; color: var(--blue); font-size: 20px; font-weight: 900; }
+    .why { margin: 0; color: var(--muted); font-size: 13px; }
+    .specs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .spec { padding: 5px 8px; color: #344054; background: #f2f4f7; border-radius: 8px; font-size: 11px; font-weight: 800; }
+
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .card { padding: 17px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+    .card .label { display: inline-block; margin-bottom: 9px; padding: 4px 7px; color: var(--good); background: var(--good-bg); border-radius: 7px; font-size: 11px; font-weight: 900; }
+    .card .price { font-size: 17px; }
+    .card p { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+
+    .table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+    table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 12px 11px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: #344054; background: #f8fafc; font-size: 11px; }
+    tr:last-child td { border-bottom: 0; }
+    td strong { color: var(--navy); }
+    .tag-good, .tag-warn { display: inline-block; padding: 3px 6px; border-radius: 6px; font-size: 10px; font-weight: 900; white-space: nowrap; }
+    .tag-good { color: var(--good); background: var(--good-bg); }
+    .tag-warn { color: var(--warn); background: var(--warn-bg); }
+
+    .domestic { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .brand-card { position: relative; overflow: hidden; padding: 19px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
+    .brand { margin: 0 0 5px; color: var(--blue); font-size: 13px; font-weight: 900; }
+    .brand-card h3 { margin: 0; color: var(--navy); font-size: 18px; }
+    .brand-card .big { margin: 11px 0 3px; color: var(--ink); font-size: 24px; font-weight: 900; letter-spacing: -.03em; }
+    .brand-card ul { margin: 12px 0 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
+    .brand-card li + li { margin-top: 5px; }
+
+    .callout { margin-top: 12px; padding: 14px 16px; color: #7c2d12; background: var(--warn-bg); border: 1px solid #fed7aa; border-radius: 14px; font-size: 12px; }
+    .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0; list-style: none; }
+    .checklist li { position: relative; padding: 12px 12px 12px 36px; background: var(--surface); border: 1px solid var(--line); border-radius: 13px; font-size: 12px; }
+    .checklist li::before { content: "✓"; position: absolute; left: 12px; color: var(--good); font-weight: 900; }
+
+    details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+    details + details { margin-top: 8px; }
+    summary { padding: 13px 15px; color: var(--navy); font-size: 13px; font-weight: 900; cursor: pointer; }
+    details p { margin: 0; padding: 0 15px 14px; color: var(--muted); font-size: 12px; }
+    footer { margin-top: 28px; padding: 18px 4px; color: var(--muted); border-top: 1px solid var(--line); font-size: 11px; }
+    footer strong { color: var(--ink); }
+
+    @media (max-width: 620px) {
+      .page { width: min(100% - 20px, 820px); }
+      .hero { margin-top: 10px; padding: 24px 19px 20px; border-radius: 20px; }
+      .quick-pick, .cards, .domestic, .checklist { grid-template-columns: 1fr; }
+      .winner { grid-template-columns: 1fr; }
+      .rank { width: 38px; height: 38px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; padding: 0; }
+      .hero { box-shadow: none; }
+      .hero-actions, .quick-pick { display: none; }
+      section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">2026.08 · 초등 6학년용 구매 가이드</p>
+      <h1>그래픽카드·VRAM 8GB 이상 노트북 추천</h1>
+      <p class="lead">게임, 코딩, 영상 편집을 오래 쓸 수 있는 모델만 추렸습니다. 삼성·LG와 게이밍 브랜드의 가격 차이도 함께 비교했습니다.</p>
+      <div class="chips">
+        <span class="chip">외장 GPU</span><span class="chip">VRAM 8GB+</span><span class="chip">RAM 16GB+</span><span class="chip">한국 판매 기준</span>
+      </div>
+      <div class="hero-actions">
+        <button class="action primary" id="share-btn" type="button">카카오톡으로 공유하기</button>
+        <button class="action secondary" id="copy-btn" type="button">요약 복사</button>
+      </div>
+      <p id="share-status" aria-live="polite"></p>
+    </header>
+
+    <nav class="quick-pick" aria-label="빠른 이동">
+      <a href="#best">바로 살 모델<span>종합 1순위</span></a>
+      <a href="#domestic">삼성·LG 비교<span>국내 브랜드</span></a>
+      <a href="#all">전체 순위<span>가격·무게·사양</span></a>
+      <a href="#check">구매 체크<span>실수 방지</span></a>
+    </nav>
+
+    <section id="best">
+      <p class="section-kicker">BEST PICK</p>
+      <h2>현재 가장 균형 좋은 선택</h2>
+      <article class="winner">
+        <div class="rank" aria-label="1위">1</div>
+        <div>
+          <h3>ASUS TUF Gaming F16<br>FX608JMI-QT273 WIN11</h3>
+          <p class="price">약 183만 원</p>
+          <p class="why">RTX 5060 8GB를 115W로 쓰고, WQXGA 165Hz 화면과 Windows 11까지 포함한 가격 균형형입니다.</p>
+          <div class="specs">
+            <span class="spec">RTX 5060 8GB</span><span class="spec">TGP 115W</span><span class="spec">16GB / 512GB</span><span class="spec">16형 165Hz</span><span class="spec">2.2kg</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <p class="section-kicker">BY NEED</p>
+      <h2>용도에 따라 고르면</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="label">가성비</span>
+          <h3>Lenovo LOQ 15AHP10</h3>
+          <p class="price">약 146만 원</p>
+          <p>RTX 5060 8GB · 100W · 16GB/512GB. 가장 저렴하지만 FreeDOS와 2.4kg 무게는 확인해야 합니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">화면·완성도</span>
+          <h3>HP OMEN 16-am0342TX</h3>
+          <p class="price">약 213만 원</p>
+          <p>RTX 5060 8GB · 115W · 24GB/1TB. 500nit·240Hz 화면이 강점이며 기본 모델은 FreeDOS입니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">휴대성</span>
+          <h3>ASUS TUF Gaming A14</h3>
+          <p class="price">약 210만 원</p>
+          <p>RTX 5060 8GB · 32GB · 1.46kg. 자주 들고 다닐 때 유리하지만 RAM은 교체할 수 없습니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">집에서 대화면</span>
+          <h3>MSI Crosshair A18</h3>
+          <p class="price">약 210만 원</p>
+          <p>RTX 5060 8GB · 115W · 18형 240Hz. 화면은 시원하지만 본체가 3.1kg입니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="domestic">
+      <p class="section-kicker">KOREAN BRANDS</p>
+      <h2>삼성과 LG 비교군</h2>
+      <p class="section-note">두 제품 모두 전용 VRAM 8GB 조건을 만족하지만, 가격의 이유와 지향점이 다릅니다.</p>
+      <div class="domestic">
+        <article class="brand-card">
+          <p class="brand">SAMSUNG</p>
+          <h3>갤럭시 북6 울트라</h3>
+          <p class="big">약 500만 원</p>
+          <div class="specs"><span class="spec">RTX 5060 8GB</span><span class="spec">32GB / 1TB</span><span class="spec">1.89kg</span></div>
+          <ul>
+            <li>AMOLED 터치 2.8K 120Hz</li>
+            <li>갤럭시 연동·삼성 서비스 강점</li>
+            <li>TGP 미표기, 게임 가성비는 낮음</li>
+          </ul>
+        </article>
+        <article class="brand-card">
+          <p class="brand">LG</p>
+          <h3>gram Pro 16</h3>
+          <p class="big">약 340만 원</p>
+          <div class="specs"><span class="spec">RTX 5050 8GB</span><span class="spec">32GB / 1TB</span><span class="spec">1.36kg</span></div>
+          <ul>
+            <li>16형 외장 GPU 제품 중 매우 가벼움</li>
+            <li>400nit·144Hz, Windows 포함</li>
+            <li>RTX 5060보다 낮은 그래픽 성능</li>
+          </ul>
+        </article>
+      </div>
+      <div class="callout"><strong>국내 브랜드만 고르면:</strong> 게임 성능·AMOLED는 삼성, 통학 휴대·가벼운 무게는 LG입니다. 순수 성능 대비 가격은 ASUS·Lenovo·HP가 훨씬 유리합니다.</div>
+    </section>
+
+    <section id="all">
+      <p class="section-kicker">RANKING</p>
+      <h2>전체 추천 순위</h2>
+      <div class="table-wrap" role="region" aria-label="노트북 추천 순위 표" tabindex="0">
+        <table>
+          <thead><tr><th>순위</th><th>제품</th><th>GPU</th><th>가격</th><th>판단</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>ASUS TUF F16</strong></td><td>5060 8GB · 115W</td><td>183만</td><td><span class="tag-good">종합 추천</span></td></tr>
+            <tr><td>2</td><td><strong>Lenovo LOQ 15</strong></td><td>5060 8GB · 100W</td><td>146만</td><td>가성비</td></tr>
+            <tr><td>3</td><td><strong>HP OMEN 16</strong></td><td>5060 8GB · 115W</td><td>213만</td><td>좋은 화면</td></tr>
+            <tr><td>4</td><td><strong>ASUS TUF A14</strong></td><td>5060 8GB · 105W</td><td>210만</td><td>휴대형</td></tr>
+            <tr><td>5</td><td><strong>MSI Crosshair A18</strong></td><td>5060 8GB · 115W</td><td>210만</td><td>대화면</td></tr>
+            <tr><td>6</td><td><strong>Acer Nitro 18</strong></td><td>5060 8GB · 100W</td><td>250만</td><td>할인 시 검토</td></tr>
+            <tr><td>7</td><td><strong>LG gram Pro 16</strong></td><td>5050 8GB · 저전력</td><td>340만</td><td><span class="tag-warn">초경량 비교군</span></td></tr>
+            <tr><td>8</td><td><strong>삼성 북6 울트라</strong></td><td>5060 8GB · TGP 미표기</td><td>500만</td><td><span class="tag-warn">프리미엄 비교군</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="check">
+      <p class="section-kicker">CHECK BEFORE BUYING</p>
+      <h2>결제 전에 이것만 확인</h2>
+      <ul class="checklist">
+        <li>외장 GPU와 전용 VRAM 8GB가 명시됐는가?</li>
+        <li>RTX 5060은 가급적 TGP 100~115W인가?</li>
+        <li>RAM 16GB 이상, 장기 사용은 32GB인가?</li>
+        <li>SSD 512GB 이상, 가능하면 1TB인가?</li>
+        <li>Windows 포함인지 FreeDOS인지 확인했는가?</li>
+        <li>본체와 어댑터를 매일 들 수 있는 무게인가?</li>
+        <li>판매자 개봉·부품 교체 상품인지 확인했는가?</li>
+        <li>국내 정식 유통과 보증·파손 조건을 확인했는가?</li>
+      </ul>
+    </section>
+
+    <section>
+      <p class="section-kicker">GOOD TO KNOW</p>
+      <h2>부모님이 알아둘 점</h2>
+      <details><summary>같은 RTX 5060인데 왜 성능이 다른가요?</summary><p>노트북마다 GPU 전력(TGP)과 냉각 능력이 다릅니다. 얇은 저전력 제품과 115W 게이밍 제품은 같은 이름이어도 장시간 게임 성능이 다를 수 있습니다.</p></details>
+      <details><summary>RAM과 저장공간은 어느 정도가 좋나요?</summary><p>16GB/512GB가 최소 시작점입니다. Minecraft 모드, Roblox Studio, 영상 편집과 여러 게임을 함께 쓰면 32GB/1TB가 더 오래 편합니다.</p></details>
+      <details><summary>초등학생 사용에서 가장 중요한 것은?</summary><p>성능만큼 사용 시간 규칙, 단단한 책상에서의 발열 관리, 화면 높이를 맞출 받침대, 자녀 계정과 정기적인 휴식 습관이 중요합니다.</p></details>
+    </section>
+
+    <footer>
+      <strong>조사 기준: 2026-08-08 대한민국 온라인 판매.</strong><br>
+      가격은 카드·쿠폰·재고에 따라 변합니다. 결제 직전 모델명 끝자리, RAM/SSD, Windows, TGP, 국내 정식 유통 여부를 다시 확인하세요.
+    </footer>
+  </main>
+
+  <script>
+    const summaryText = `6학년 노트북 추천 (VRAM 8GB 이상)\n\n1순위: ASUS TUF Gaming F16 — RTX 5060 8GB 115W, 약 183만 원\n가성비: Lenovo LOQ 15 — 약 146만 원\n화면·완성도: HP OMEN 16 — 약 213만 원\n휴대성: ASUS TUF A14 — 1.46kg, 약 210만 원\n\n국내 브랜드 비교\nLG gram Pro 16 — RTX 5050 8GB, 1.36kg, 약 340만 원\n삼성 갤럭시 북6 울트라 — RTX 5060 8GB, 1.89kg, 약 500만 원\n\n결론: 게임 성능 대비 가격은 ASUS/Lenovo, 국내 서비스·프리미엄은 삼성/LG.`;
+    const status = document.getElementById('share-status');
+
+    async function copySummary() {
+      try {
+        await navigator.clipboard.writeText(summaryText);
+        status.textContent = '추천 요약을 복사했습니다. 카카오톡 대화창에 붙여 넣으세요.';
+      } catch (_) {
+        const box = document.createElement('textarea');
+        box.value = summaryText;
+        document.body.appendChild(box);
+        box.select();
+        document.execCommand('copy');
+        box.remove();
+        status.textContent = '추천 요약을 복사했습니다. 카카오톡 대화창에 붙여 넣으세요.';
+      }
+    }
+
+    document.getElementById('copy-btn').addEventListener('click', copySummary);
+    document.getElementById('share-btn').addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          const data = { title: '6학년 노트북 추천', text: summaryText };
+          if (location.protocol === 'http:' || location.protocol === 'https:') data.url = location.href;
+          await navigator.share(data);
+          status.textContent = '공유 메뉴에서 카카오톡을 선택하면 됩니다.';
+        } catch (error) {
+          if (error.name !== 'AbortError') await copySummary();
+        }
+      } else {
+        await copySummary();
+      }
+    });
+  </script>
+</body>
+</html>
